@@ -38,6 +38,10 @@ export class Fraction {
         this.denom = parseInt(`${denom}`);
     }
 
+    clone() {
+        return new Fraction(this.num, this.denom);
+    }
+
     simplify() {
         var gcd = gcf(this.num, this.denom);
         this.num /= gcd;
@@ -48,8 +52,8 @@ export class Fraction {
         }
     }
 
-    returnSimplified() {
-        let copy = new Fraction(this.num, this.denom);
+    static simplify(frac : Fraction) {
+        let copy = frac.clone();
         copy.simplify();
         return copy;
     }
@@ -60,9 +64,21 @@ export class Fraction {
         this.simplify();
     }
 
+    static multiply(frac1: Fraction, frac2: Fraction) {
+        let copy = frac1.clone();
+        copy.multiply(frac2);
+        return copy;
+    }
+
     divide(other : Fraction) {
-        let multiplier = new Fraction(other.denom, other.num);
+        let multiplier = other.clone();
         this.multiply(multiplier);
+    }
+
+    static divide(frac1: Fraction, frac2: Fraction) {
+        let copy = frac1.clone();
+        copy.divide(frac2);
+        return copy;
     }
 
     add(other : Fraction) {
@@ -76,9 +92,21 @@ export class Fraction {
         this.simplify();
     }
 
+    static add(frac1: Fraction, frac2: Fraction) {
+        let copy = frac1.clone();
+        copy.add(frac2);
+        return copy;
+    }
+
     subtract(other : Fraction) {
         let subtrahend = new Fraction(-1 * other.num, other.denom);
         this.add(subtrahend);
+    }
+
+    static subtract(frac1: Fraction, frac2: Fraction) {
+        let copy = frac1.clone();
+        copy.subtract(frac2);
+        return copy;
     }
 
     toString() {
@@ -86,8 +114,8 @@ export class Fraction {
     }
 
     equals(other : Fraction) {
-        let simplified1 = this.returnSimplified();
-        let simplified2 = other.returnSimplified();
+        let simplified1 = Fraction.simplify(this);
+        let simplified2 = Fraction.simplify(other);
         return simplified1.num === simplified2.num && simplified1.denom === simplified2.denom;
     }
 }

@@ -43,8 +43,8 @@ var Fraction = /** @class */ (function () {
             this.denom *= -1;
         }
     };
-    Fraction.prototype.returnSimplified = function () {
-        var copy = new Fraction(this.num, this.denom);
+    Fraction.simplify = function (frac) {
+        var copy = new Fraction(frac.num, frac.denom);
         copy.simplify();
         return copy;
     };
@@ -53,9 +53,19 @@ var Fraction = /** @class */ (function () {
         this.denom *= other.denom;
         this.simplify();
     };
+    Fraction.multiply = function (frac1, frac2) {
+        var copy = new Fraction(frac1.num, frac1.denom);
+        copy.multiply(frac2);
+        return copy;
+    };
     Fraction.prototype.divide = function (other) {
         var multiplier = new Fraction(other.denom, other.num);
         this.multiply(multiplier);
+    };
+    Fraction.divide = function (frac1, frac2) {
+        var copy = new Fraction(frac1.num, frac1.denom);
+        copy.divide(frac2);
+        return copy;
     };
     Fraction.prototype.add = function (other) {
         var lcd = lcm(this.denom, other.denom);
@@ -67,16 +77,26 @@ var Fraction = /** @class */ (function () {
         this.num += addend.num;
         this.simplify();
     };
+    Fraction.add = function (frac1, frac2) {
+        var copy = new Fraction(frac1.num, frac1.denom);
+        copy.add(frac2);
+        return copy;
+    };
     Fraction.prototype.subtract = function (other) {
         var subtrahend = new Fraction(-1 * other.num, other.denom);
         this.add(subtrahend);
+    };
+    Fraction.subtract = function (frac1, frac2) {
+        var copy = new Fraction(frac1.num, frac1.denom);
+        copy.subtract(frac2);
+        return copy;
     };
     Fraction.prototype.toString = function () {
         return "".concat(this.num, "/").concat(this.denom);
     };
     Fraction.prototype.equals = function (other) {
-        var simplified1 = this.returnSimplified();
-        var simplified2 = other.returnSimplified();
+        var simplified1 = Fraction.simplify(this);
+        var simplified2 = Fraction.simplify(other);
         return simplified1.num === simplified2.num && simplified1.denom === simplified2.denom;
     };
     return Fraction;
